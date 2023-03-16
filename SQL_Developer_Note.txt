@@ -1,0 +1,254 @@
+to_char
+nvl
+nvl2
+nullif
+trim
+ltrim
+rtrim
+length
+lpad
+rpad
+uppercase
+lowercase
+replace
+instring
+substring
+count
+max
+min
+avg
+Group by 
+having
+date;
+
+JOIN 
+Sub Query 
+
+CTE - WITH 
+
+
+
+select employee_id, first_name, last_name, manager_id, 
+salary, commission_pct, nvl(to_char(commission_pct), 'Not Applicable') as check_nvl,
+nvl(commission_pct, salary) as nvl_sal,
+nvl2(commission_pct, salary + 500, salary) as new_salary,
+nullif(manager_id, commission_pct) as check_nullif,
+nullif(commission_pct, manager_id) as check_nullif_1
+from employees;
+
+
+select employee_id, first_name,  length(first_name),
+lpad(first_name, 15, '*'), length(lpad(first_name, 15, '*'))
+from employees where employee_id in (100,103);
+
+lpad
+rpad 
+;
+length()
+select 'Deepak' as name , lpad('Deep', 10, '*'), rpad('Deep', 10, '*')
+from dual;
+
+****Deepak
+
+****Deepak****
+;
+
+select 'Deepakekeke' as name , replace('Deepakekeke', 'ee', 'i')
+from dual;
+
+select 'Sai|Kumar' as PKEY, instr('Sai|Kumarhjhjaklkhkhja', 'a', 1, 4)
+from dual;
+
+instr() a , ai, sai
+instr(p1, p2, p3, p4)
+
+p1 -- string or column
+p2 -- char which u want to find
+p3 -- from which position u wnat to find -- optional 
+p4 -- which occurance u want to find 
+;
+
+select 'Sai|Kumar' as PKEY, instr('Sai|Kumarhjhjaklkhkhja', 'a', 1, 4),
+substr('Sai|Kumar',4 , 3)
+from dual;
+
+select employee_id, first_name, last_name, email,instr(email, '@') , instr(email, '.'),instr(email, '.') - instr(email, '@') as len, 
+substr(email, instr(email, '@') +1 , (instr(email, '.') - instr(email, '@')) -1) as company
+from employees
+where employee_id in (103, 105,100);
+
+instr(p1, p2, p3 ,p4)
+substr(p1, p2, p3)
+
+CUSTOMER|1234|PKEY 
+
+update employees
+set email ='SKING@BOA.COM'
+where employee_id =100;
+commit;
+
+
+substr(p1, p2 , p3  )
+
+Sai|Kumar --- 
+
+
+select * from employees;
+
+Full Name:
+Deepak|Kumar 
+Sai|Kumar
+
+instr and substr 
+
+instr(p1, p2, p3 )
+
+Deepak|Kumar
+Sai|Kumar
+
+
+
+replace (p1, p2, p3 )
+
+Deepak -- D A
+Aeepak
+
+deepak - ee i
+dipak 
+
+;
+
+select sum(salary)  from employees
+where employee_id in (100,103,105,106);
+
+select employee_id, first_name, last_name, salary, hire_date
+from employees;
+
+
+select  sysdate, current_timestamp, to_char(sysdate, 'DD-MON-YYYY' ) tochar_date, to_date('01-03-23','DD-MM-YY') todate_fun
+from dual;
+
+reading a date from DB - query result 
+write date to DB - createing updating date field 
+
+DD-MM-YY 
+03-03-23 
+
+
+
+DD-MM-YY
+
+DATE -- DD-MM-YY
+DD-MON-YYYY
+TO_CHAR()
+
+, to_char(sysdate,'DD:MON:YYYY HH/MM/SS') as manipulate_date,;
+select 100, '100', to_char(100), to_date('12-MAR-24')
+from dual;
+
+select sysdate , trunc(sysdate)
+from dual;
+
+15-03-23 00:00:00
+
+to_char
+to_date
+trunc()
+sysdate
+current_timestamp 
+
+
+select employee_id, first_name , hire_date
+from employees
+where --trunc(hire_date) = '15-03-23';
+to_char(hire_date, 'DD-MON-YYYY') = '15-MAR-2023';
+
+where 
+--to_char(hire_date, 'DD-MM-YY') = '15-03-23' and
+--trunc(hire_date) = '15-03-23' and
+employee_id in (203, 204);
+
+update employees
+set hire_date = sysdate
+where employee_id =204;
+commit;
+
+
+
+select TO_DATE('02-02-1995','MM-DD-YYYY') from dual;
+
+select sysdate, add_months(sysdate, 1 ) from dual;
+
+select last_day(DATE '03-02-23' ) from dual;
+select MONTHS_BETWEEN
+       (TO_DATE('02-02-1995','MM-DD-YYYY'),
+        TO_DATE('01-01-1995','MM-DD-YYYY') ) "Months"
+  FROM DUAL;
+  
+select months_between(DATE '01-08-23', DATE '01-01-23') from dual;
+
+
+
+to_char(DATE)
+to_date
+
+DD-MM-YY HH:MI:SS
+MM : 01, 03
+MON: MAR, JAN, FEB 
+
+DD-MM-YY   13-MAR-2023
+DD-MON-YYYY;
+select count(*) from employees; 
+
+select employee_id, first_name, last_name, salary, department_id from employees
+order by department_id;
+
+select department_id , count(*)
+from employees
+--where department_id > 50;
+group by department_id
+having count(*) > 20;
+
+having keyword that willll replace where function
+
+dept where empl are more - more then 30 - then give me data 
+
+-department wise give me employee count 
+- if i can group my dept data then somehow i count the data 
+group by 
+
+
+select * from employees;
+
+select employee_id, first_name,salary,manager_id, commission_pct , nvl(to_char(commission_pct),'Not Applicable') NVL_1,
+nvl2(commission_pct,salary+commission_pct*100,salary) as NVL_2,
+nullif(manager_id,commission_pct ),
+nvl(commission_pct,10) NVL_10
+from employees;
+
+select employee_id, first_name, last_name , ltrim(first_name), rtrim(last_name), trim(last_name),
+rpad(first_name,5,'*'), upper(first_name), lower(first_name)
+from employees;
+
+select employee_id, job_id, replace(job_id, 'AC','Test') from employees;
+select  min(salary) from employees
+where salary>15000;
+
+select employee_id, first_name, last_name, length(first_name)
+from employees;
+
+select 'Deepak Kumar' as name , instr('Deepak Kumar', 'a')
+from dual;
+
+select 'Deepak Kumar' as name , substr('Deepak Kumar',-5)
+from dual;
+
+
+
+   
+
+update employees
+set first_name = '       Steven      ',
+last_name = '     King     '
+where employee_id =100;
+commit;
