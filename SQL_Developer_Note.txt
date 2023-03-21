@@ -252,3 +252,171 @@ set first_name = '       Steven      ',
 last_name = '     King     '
 where employee_id =100;
 commit;
+
+JOIN
+-----
+joining two or more then two tables 
+emp
+dept
+loc
+;
+
+select * from employees where employee_id = 100;
+select * from departments where department_id = 90;
+select * from locations where location_id = 1700;
+
+slef join - same table emp again joining with emp to pulll the data 
+inner join 
+left join 
+right join 
+left outer
+right outer
+full outer join ;
+
+create table emp(
+emp_id varchar2(50),
+name varchar2(50),
+age varchar2(50),
+DOJ varchar2(50),
+dept_id varchar2(50)
+);
+
+create table addr(
+addr_id varchar2(50),
+city varchar2(50),
+state varchar2(50),
+country varchar2(50)
+);
+
+insert into emp (emp_id, name, age, doj, dept_id)
+values('888',	'Shreya',	'28',	'01-05-2021',	null);
+commit;
+select * from emp;
+
+insert into dept (dept_id, name, addr_id)
+values('70','Marketing','700');
+commit;
+select * from dept;
+
+insert into addr(addr_id, city, state, country)
+values('900',null,'PA','FRA');
+commit;
+select * from addr;
+
+select e.emp_id, e.name, e.dept_id, d.dept_id, d.name, d.addr_id, a.addr_id, a.country
+from emp e, dept d, addr a
+where e.dept_id = d.dept_id
+and d.addr_id = a.addr_id;
+
+select e.emp_id, e.name, e.dept_id, d.dept_id, d.name, d.addr_id, a.addr_id, a.country
+from emp e inner join dept d
+on e.dept_id = d.dept_id
+inner join addr a
+on d.addr_id = a.addr_id;
+
+--left join
+select e.emp_id, e.name, e.dept_id, d.dept_id, d.name, d.addr_id, a.addr_id, a.country
+from emp e right join dept d
+on e.dept_id = d.dept_id
+right join addr a
+on d.addr_id = a.addr_id;
+
+-- self join
+
+select * from employees
+where EMPLOYEE_ID in (100,101,102,103);
+
+select e1.employee_id, e1.first_name, e1.manager_id, e2.employee_id, e2.first_name
+from employees e1, employees e2
+where e1.manager_id = e2.employee_id
+and e1.EMPLOYEE_ID in (100,101,102,103);
+
+select * from emp;
+select * from dept;
+select * from addr;
+
+--INNER JOIN
+
+select e.emp_id, e.name employee_name, e.age, e.doj, e.dept_id as this_is_emp_dept_id, 
+d.dept_id dept_table_id , d.name department_name, d.addr_id, a.addr_id, a.country
+from emp e inner join dept d
+on e.dept_id = d.dept_id
+inner join addr a
+on d.addr_id = a.addr_id;
+
+select d.dept_id, d.name, d.addr_id, a.addr_id, a.country
+from dept d inner join addr a
+on d.addr_id = a.addr_id;
+
+--inner join
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name
+from emp e inner join dept d 
+on e.dept_id = d.dept_id;
+
+--lelft join
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name
+from emp e left join dept d 
+on e.dept_id = d.dept_id
+where e.emp_id not in (111)
+and (d.dept_id <> 50 or d.dept_id is null);
+
+--right join
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name, d.addr_id, a.addr_id, a.state, a.country
+from emp e right join dept d 
+on e.dept_id = d.dept_id
+right join addr a
+on d.addr_id = a.addr_id;
+
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name
+from dept d left join  emp e
+on e.dept_id = d.dept_id;
+
+--full join
+
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name
+from dept d full join  emp e
+on e.dept_id = d.dept_id;
+
+select e.emp_id, e.name, e.age, e.dept_id, d.dept_id, d.name, d.addr_id, a.addr_id, a.state, a.country
+from emp e full join dept d 
+on e.dept_id = d.dept_id
+full join addr a
+on d.addr_id = a.addr_id;
+
+inner 
+left 
+right 
+full outer join
+self join ;
+
+--self join
+select employee_id, first_name, salary, manager_id
+from employees
+where employee_id in (100,101,102,103,104);
+
+--join -- min two table -- employee , employee
+
+select e1.employee_id, e1.first_name, e1.salary, e1.manager_id, e2.employee_id, e2.first_name
+from employees e1 self join employees e2
+on e1.manager_id = e2.employee_id
+where e1.employee_id in (100,101,102,103,104);
+
+select e1.employee_id, e1.first_name, e1.salary, e1.manager_id, e2.employee_id manager_emp_id, e2.first_name manager_name
+from employees e1, employees e2
+where e1.manager_id = e2.employee_id
+and e1.EMPLOYEE_ID in (100,101,102,103,104);
+
+SELECT * FROM EMPLOYEES;
+--WITH 
+
+WITH TEMP_TABLE AS (
+select e1.employee_id, e1.first_name, e1.salary, e1.manager_id, e2.employee_id manager_emp_id, e2.first_name manager_name
+from employees e1, employees e2
+where e1.manager_id = e2.employee_id
+and e1.EMPLOYEE_ID in (100,101,102,103,104))
+
+--SELECT * FROM TEMP_TABLE
+
+SELECT EMPLOYEE_ID, FIRST_NAME, EMAIL, PHONE_NUMBER
+FROM EMPLOYEES WHERE EMPLOYEE_ID IN (SELECT MANAGER_EMP_ID FROM TEMP_TABLE);
+
